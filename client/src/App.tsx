@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { initializeEmailJS } from "@/lib/emailjs";
 import Home from "@/pages/home";
 import Results from "@/pages/results";
+import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/results" component={Results} />
+      <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
   );

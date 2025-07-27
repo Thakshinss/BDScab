@@ -24,9 +24,9 @@ export default function Header() {
             <a href="#features" className="text-gray-700 hover:text-primary transition-colors">
               About
             </a>
-            <a href="#footer" className="text-gray-700 hover:text-primary transition-colors">
+            <Link href="/contact" className="text-gray-700 hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
           
           <button 
@@ -50,9 +50,9 @@ export default function Header() {
               <a href="#features" className="text-gray-700 hover:text-primary transition-colors">
                 About
               </a>
-              <a href="#footer" className="text-gray-700 hover:text-primary transition-colors">
+              <Link href="/contact" className="text-gray-700 hover:text-primary transition-colors">
                 Contact
-              </a>
+              </Link>
             </nav>
           </div>
         )}

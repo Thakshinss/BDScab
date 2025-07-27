@@ -33,7 +33,7 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Frontend Structure
-- **Pages**: Home, Results, and 404 Not Found
+- **Pages**: Home, Results, Contact Us, and 404 Not Found
 - **Components**: 
   - Search form with validation
   - Car showcase and selection
@@ -52,6 +52,7 @@ Preferred communication style: Simple, everyday language.
 - **Car Selection**: Multiple vehicle types (sedan, SUV, mini, tempo traveler)
 - **Booking Process**: Customer details collection and confirmation
 - **Email Notifications**: Automated booking confirmations via EmailJS
+- **Contact Support**: Dedicated contact page with form and business information
 - **Responsive Design**: Mobile-first approach with adaptive layouts
 
 ## Data Flow
