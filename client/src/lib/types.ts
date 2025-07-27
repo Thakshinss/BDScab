@@ -10,7 +10,6 @@ export interface Car {
   name: string;
   type: string;
   image: string;
-  images?: string[];
   capacity: number;
   bags: number;
   pricePerKm: number;
