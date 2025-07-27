@@ -50,10 +50,17 @@ export function LocationInput({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=in&addressdetails=1`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}, India&limit=8&countrycodes=in&addressdetails=1&bounded=1`
       );
       const data = await response.json();
-      setSuggestions(data);
+      
+      // Filter to ensure only Indian locations
+      const indianLocations = data.filter((location: LocationSuggestion) => 
+        location.display_name.toLowerCase().includes('india') ||
+        location.display_name.toLowerCase().includes('bharat')
+      );
+      
+      setSuggestions(indianLocations);
       setShowSuggestions(true);
       setSelectedIndex(-1);
     } catch (error) {
@@ -112,12 +119,21 @@ export function LocationInput({
   };
 
   const formatDisplayName = (displayName: string) => {
-    // Extract city, state from the full address
+    // Extract meaningful parts for Indian locations
     const parts = displayName.split(', ');
-    if (parts.length > 3) {
-      return parts.slice(0, 3).join(', ');
+    
+    // Remove "India" from the end if present
+    const filteredParts = parts.filter(part => 
+      !part.toLowerCase().includes('india') && 
+      !part.toLowerCase().includes('bharat')
+    );
+    
+    // Show city, district/area, state for better context
+    if (filteredParts.length > 3) {
+      return filteredParts.slice(0, 3).join(', ');
     }
-    return displayName;
+    
+    return filteredParts.join(', ');
   };
 
   return (
