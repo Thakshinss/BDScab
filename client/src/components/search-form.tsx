@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { useToast } from "@/hooks/use-toast";
 import type { SearchParams } from "@/lib/types";
 
@@ -100,15 +101,11 @@ export default function SearchForm({ onSearch, initialData }: SearchFormProps) {
         
         <div className="space-y-2">
           <Label className="text-sm font-medium text-gray-700">Date & Time</Label>
-          <div className="relative">
-            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="datetime-local"
-              value={formData.datetime}
-              onChange={(e) => updateField("datetime", e.target.value)}
-              className="pl-10"
-            />
-          </div>
+          <DateTimePicker
+            value={formData.datetime}
+            onChange={(value) => updateField("datetime", value)}
+            placeholder="Select date and time"
+          />
         </div>
         
         <div className="space-y-2">
