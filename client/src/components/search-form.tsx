@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { MapPin, Calendar, Users, Search } from "lucide-react";
+import { Calendar, Users, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { LocationInput } from "@/components/ui/location-input";
 import { useToast } from "@/hooks/use-toast";
 import type { SearchParams } from "@/lib/types";
 
@@ -73,30 +73,22 @@ export default function SearchForm({ onSearch, initialData }: SearchFormProps) {
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
         <div className="space-y-2">
           <Label className="text-sm font-medium text-gray-700">Pickup Location</Label>
-          <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="text"
-              placeholder="Enter pickup location"
-              value={formData.pickup}
-              onChange={(e) => updateField("pickup", e.target.value)}
-              className="pl-10"
-            />
-          </div>
+          <LocationInput
+            value={formData.pickup}
+            onChange={(value) => updateField("pickup", value)}
+            placeholder="Enter pickup location"
+            iconColor="text-gray-400"
+          />
         </div>
         
         <div className="space-y-2">
           <Label className="text-sm font-medium text-gray-700">Drop Location</Label>
-          <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red-400 h-4 w-4" />
-            <Input
-              type="text"
-              placeholder="Enter destination"
-              value={formData.destination}
-              onChange={(e) => updateField("destination", e.target.value)}
-              className="pl-10"
-            />
-          </div>
+          <LocationInput
+            value={formData.destination}
+            onChange={(value) => updateField("destination", value)}
+            placeholder="Enter destination"
+            iconColor="text-red-400"
+          />
         </div>
         
         <div className="space-y-2">
