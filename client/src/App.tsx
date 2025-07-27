@@ -8,6 +8,7 @@ import { initializeEmailJS } from "@/lib/emailjs";
 import Home from "@/pages/home";
 import Results from "@/pages/results";
 import Contact from "@/pages/contact";
+import Booking from "@/pages/booking";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/results" component={Results} />
       <Route path="/contact" component={Contact} />
+      <Route path="/booking" component={Booking} />
       <Route component={NotFound} />
     </Switch>
   );

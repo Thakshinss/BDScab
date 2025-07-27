@@ -3,18 +3,15 @@ import { useLocation, useSearch } from "wouter";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import CarCard from "@/components/car-card";
-import BookingModal from "@/components/booking-modal";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { cars } from "@/components/car-showcase";
-import type { SearchParams, Car, BookingDetails } from "@/lib/types";
+import type { SearchParams, Car } from "@/lib/types";
 
 export default function Results() {
   const [, setLocation] = useLocation();
   const searchString = useSearch();
   const [searchParams, setSearchParams] = useState<SearchParams | null>(null);
-  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(searchString);
@@ -44,22 +41,15 @@ export default function Results() {
   const handleBookNow = (car: Car) => {
     if (!searchParams) return;
     
-    const bookingDetails: BookingDetails = {
+    const bookingParams = new URLSearchParams({
       ...searchParams,
-      selectedCar: car,
-      estimatedDistance: 25, // Mock distance
-      totalFare: calculateFare(car),
-      eta: getETA(),
-    };
+      carId: car.id,
+    } as Record<string, string>);
     
-    setSelectedCar(car);
-    setIsModalOpen(true);
+    setLocation(`/booking?${bookingParams.toString()}`);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedCar(null);
-  };
+
 
   if (!searchParams) {
     return <div>Loading...</div>;
@@ -69,13 +59,7 @@ export default function Results() {
   const passengerCount = parseInt(searchParams.passengers.replace("+", ""));
   const availableCars = cars.filter(car => car.capacity >= passengerCount);
 
-  const bookingDetails: BookingDetails | null = selectedCar ? {
-    ...searchParams,
-    selectedCar,
-    estimatedDistance: 25,
-    totalFare: calculateFare(selectedCar),
-    eta: getETA(),
-  } : null;
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -127,14 +111,6 @@ export default function Results() {
       </main>
 
       <Footer />
-
-      {bookingDetails && (
-        <BookingModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          bookingDetails={bookingDetails}
-        />
-      )}
     </div>
   );
 }

@@ -33,7 +33,7 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Frontend Structure
-- **Pages**: Home, Results, Contact Us, and 404 Not Found
+- **Pages**: Home, Results, Contact Us, Booking, and 404 Not Found
 - **Components**: 
   - Search form with validation
   - Car showcase and selection
@@ -59,8 +59,9 @@ Preferred communication style: Simple, everyday language.
 
 1. **Search Process**: User enters pickup/destination → Client validation → Navigate to results
 2. **Vehicle Selection**: Display available cars → Calculate fares → Show booking options
-3. **Booking Flow**: Collect customer details → Validate form → Send email confirmation
-4. **State Management**: React Query handles async operations and caching
+3. **Booking Navigation**: Click "Book Now" → Navigate to dedicated booking page with trip details
+4. **Booking Flow**: Review trip summary → Collect customer details → Validate form → Send email confirmation
+5. **State Management**: React Query handles async operations and caching
 
 ## External Dependencies
 
