@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import CarCard from "./car-card";
 import type { Car } from "@/lib/types";
 
@@ -65,6 +68,52 @@ const cars: Car[] = [
 ];
 
 export default function CarShowcase() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [carsPerView, setCarsPerView] = useState(1);
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  
+  // Update cars per view based on screen size
+  const updateCarsPerView = () => {
+    if (window.innerWidth >= 1024) {
+      setCarsPerView(4); // Desktop: show all cars in grid
+    } else if (window.innerWidth >= 768) {
+      setCarsPerView(2); // Tablet: show 2 cars per slide
+    } else {
+      setCarsPerView(1); // Mobile: show 1 car per slide
+    }
+  };
+
+  useEffect(() => {
+    updateCarsPerView();
+    window.addEventListener('resize', updateCarsPerView);
+    return () => window.removeEventListener('resize', updateCarsPerView);
+  }, []);
+  
+  const totalSlides = Math.ceil(cars.length / carsPerView);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlay || window.innerWidth >= 1024 || totalSlides <= 1) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoPlay, totalSlides]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
   return (
     <section id="cars" className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -75,10 +124,76 @@ export default function CarShowcase() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Desktop Grid View */}
+        <div className="hidden lg:grid lg:grid-cols-4 gap-8">
           {cars.map((car) => (
             <CarCard key={car.id} car={car} />
           ))}
+        </div>
+
+        {/* Mobile/Tablet Slider View */}
+        <div 
+          className="lg:hidden relative"
+          onMouseEnter={() => setIsAutoPlay(false)}
+          onMouseLeave={() => setIsAutoPlay(true)}
+        >
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+                <div key={slideIndex} className="w-full flex-shrink-0 flex gap-4 px-4">
+                  {cars.slice(slideIndex * carsPerView, (slideIndex + 1) * carsPerView).map((car) => (
+                    <div key={car.id} className={`${carsPerView === 2 ? 'w-1/2' : 'w-full'} flex-shrink-0`}>
+                      <CarCard car={car} />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Arrows */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-2 bg-white/80 hover:bg-white shadow-lg z-10"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-2 bg-white/80 hover:bg-white shadow-lg z-10"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+
+          {/* Dot Indicators */}
+          <div className="flex justify-center mt-8 space-x-2">
+            {Array.from({ length: totalSlides }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                  index === currentSlide
+                    ? 'bg-primary scale-110'
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Slide Counter */}
+          <div className="text-center mt-4">
+            <span className="text-sm text-gray-500">
+              {currentSlide + 1} of {totalSlides}
+            </span>
+          </div>
         </div>
       </div>
     </section>
